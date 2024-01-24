@@ -25,41 +25,112 @@ and also the following two new tactics:
 variable (P Q R S : Prop)
 
 example : P ↔ P := by
-  sorry
+  rfl
   done
 
 example : (P ↔ Q) → (Q ↔ P) := by
-  sorry
+  intro pq
+  rw [pq]
   done
 
 example : (P ↔ Q) ↔ (Q ↔ P) := by
-  sorry
+  constructor
+  intro pq
+  rw [pq]
+  intro qp
+  rw [qp]
   done
 
 example : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
-  sorry
+  intro pq
+  intro qr
+  rw [pq]
+  rw [← qr]
   done
 
 example : P ∧ Q ↔ Q ∧ P := by
-  sorry
+  constructor
+  intro pq
+  cases' pq with p q
+  constructor
+  exact q
+  exact p
+  intro qp
+  cases' qp with q p
+  constructor
+  exact p
+  exact q
   done
 
 example : (P ∧ Q) ∧ R ↔ P ∧ Q ∧ R := by
-  sorry
+  constructor
+  intro pqr
+  cases' pqr with pq r
+  cases' pq with p q
+  constructor
+  exact p
+  constructor
+  exact q
+  exact r
+  intro pqr
+  cases' pqr with p qr
+  cases' qr with q r
+  constructor
+  constructor
+  exact p
+  exact q
+  exact r
   done
 
 example : P ↔ P ∧ True := by
-  sorry
+  constructor
+  intro p
+  constructor
+  exact p
+  triv
+  intro pt
+  cases' pt with p t
+  exact p
   done
 
 example : False ↔ P ∧ False := by
-  sorry
+  constructor
+  intro f
+  constructor
+  exfalso
+  exact f
+  exact f
+  intro pf
+  cases' pf with p f
+  exact f
   done
 
 example : (P ↔ Q) → (R ↔ S) → (P ∧ R ↔ Q ∧ S) := by
-  sorry
+  intro pq
+  intro rs
+  constructor
+  intro pr
+  rw [pq] at pr
+  rw [rs] at pr
+  exact pr
+  intro qs
+  rw [← pq] at qs
+  rw [← rs] at qs
+  exact qs
   done
 
 example : ¬(P ↔ ¬P) := by
-  sorry
+  by_cases p : P
+  intro pnp
+  cases' pnp with h1 h2
+  apply h1
+  exact p
+  exact p
+  intro pnp
+  cases' pnp with h1 h2
+  apply h1
+  apply h2
+  exact p
+  apply h2
+  exact p
   done
