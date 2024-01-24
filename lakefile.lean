@@ -12,3 +12,5 @@ require mathlib from git
 lean_lib «FormalisingMathematics2024» {
   -- add any library configuration options here
 }
+
+require Paperproof from git "https://github.com/Paper-Proof/paperproof.git"@"main"/"lean"
