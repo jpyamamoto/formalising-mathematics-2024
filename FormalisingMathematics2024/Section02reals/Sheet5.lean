@@ -14,7 +14,17 @@ open Section2sheet3solutions
 
 -- you can maybe do this one now
 theorem tendsTo_neg {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fun n ↦ -a n) (-t) := by
-  sorry
+  rw [tendsTo_def] at *
+  intro ε hε
+  specialize ha ε (by linarith)
+  cases' ha with B hb
+  use B
+  intro n hn
+  specialize hb n
+  apply hb at hn
+  rw [abs_lt] at *
+  cases' hn with h1 h2
+  constructor <;> linarith
 
 /-
 `tendsTo_add` is the next challenge. In a few weeks' time I'll
@@ -56,6 +66,8 @@ tends to `t - u`. -/
 theorem tendsTo_sub {a b : ℕ → ℝ} {t u : ℝ} (ha : TendsTo a t) (hb : TendsTo b u) :
     TendsTo (fun n ↦ a n - b n) (t - u) := by
   -- this one follows without too much trouble from earlier results.
-  sorry
+  apply tendsTo_add
+  . exact ha
+  . exact tendsTo_neg hb
 
 end Section2sheet5
